@@ -15,4 +15,10 @@
       <ProjectReference Include="..\GregorsGodsaksKontrakter\GregorsGodsaksKontrakter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Components\Components\InputComponent.cs">
+        <DependentUpon>InputComponent.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

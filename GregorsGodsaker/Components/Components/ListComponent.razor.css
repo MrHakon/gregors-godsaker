@@ -1,0 +1,4 @@
+﻿.list_item:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}

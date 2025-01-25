@@ -1,0 +1,58 @@
+﻿@* Ved å markere en fil med @page og en filsti, sier vi til Blazor at nettleseren kan navigere til denne. *@
+@page "/Komponenter"
+@using GregorsGodsaker.Components.Services
+
+@* Slik gir man siden en tittel *@
+<PageTitle>Komponenter</PageTitle>
+
+<h1>Komponenter</h1>
+<p>Dette er en samling av vanlige elementer man finner på en nettside.</p>
+<p>Det er ikke meningen at disse må brukes for å løse oppgaven. De er mer ment som hjelp til å forstå Blazor sin syntaks.</p>
+<p>Det er ofte flere måter å skrive dem på.</p>
+
+<div class="d-flex flex-column gap-3">
+    <div>
+        <h3>Knapp</h3>
+        @* Verdens enkleste eksempel på hvordan en komponent kan brukes. 
+        Navnet hentes fra filnavnet til komponenten *@
+        <ButtonComponent/>
+    </div>
+    
+    <div>
+        @* Her er et tekstinput-felt med databinding *@
+        <h3>Input-felt</h3>
+        <InputComponent/>
+    </div>
+
+    @* Denne komponenten tar inn noe data, og returnerer noe annet. *@
+    <div>
+        <h3>Dataflyt</h3>
+        <ListComponent
+            SnackData="SnackData"
+            ReturnClickedSnack="HandleSnack"/>
+
+        @if (ClickedSnack != null)
+        {
+            <p>Du trykket på <b>@ClickedSnack</b></p>
+        }
+    </div>
+</div>
+
+@code {
+    // Dette er hvordan man bruker dependency injection til å benytte en service, som for eksempel henter ut data fra et API.
+    // Merk at servicen må registreres i Program.cs
+    [Inject] public required ISnackService SnackService { get; set; }
+    
+    private List<string>? SnackData { get; set; }
+    private string? ClickedSnack { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SnackData = await SnackService.GetSnacks();
+    }
+
+    // Vi sender denne funksjonen inn som et parameter til ListComponent, slik at ListComponent kan bruke den til å
+    // gi oss noe data tilbake
+    private void HandleSnack(string snack) => ClickedSnack = snack;
+
+}

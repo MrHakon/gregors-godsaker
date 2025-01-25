@@ -7,8 +7,15 @@ namespace GregorsGodsakApi.Controllers;
 public class SnackController : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetSnacks()
+    public IActionResult GetSnacks()
     {
-        return Ok("Here are some snacks");
+        var results = new List<string>
+        {
+            "Sjokolade",
+            "Banan",
+            "Punsjrull"
+        };
+        
+        return Ok(results);
     }
 }

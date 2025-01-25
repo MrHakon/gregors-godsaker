@@ -1,0 +1,8 @@
+﻿/*Denne filen er scopet til komponenten den er avhengig av. Hvis du vil style hele appen, kan det gjøres i app.css */
+
+/* Vi vil ikke at klassenavnet skal krasje med bootstrap. */
+.input_med_unikt_navn {
+    background-color: rebeccapurple;
+    margin-top: 0.5rem;
+    color: white;
+}

@@ -1,0 +1,18 @@
+﻿@* Se de rare greiene. p-1? bg-info? Blazor kommer med Bootstrap innebygget. 
+Men man kan også lage en CSS-fil som er scopet til denne komponenten, ved opprette filen i samme mappe og gi den eksakt samme navn med .css-ending: ButtonComponent.razor.css, 
+eller valgfritt navn og drag-and-drop den oppå ButtonComponent.Razor *@
+
+<div class="bg-info p-1">
+    <button @onclick="Clicked" >Knapp</button>
+    <p class="mt-2 bg-danger">@GlobalTekstSomKanSettesFraHeleFilen</p>
+</div>
+
+@* For små komponenter kan man skrive koden i samme fil, ved å legge på en @code {} *@
+@code {
+    
+    private string GlobalTekstSomKanSettesFraHeleFilen { get; set; } = string.Empty;
+
+    // Se her! God gammel C#, i stedet for JavaScript
+    private void Clicked() 
+        => GlobalTekstSomKanSettesFraHeleFilen = string.IsNullOrWhiteSpace(GlobalTekstSomKanSettesFraHeleFilen) ? "Steikje makaroni! Dette var ikke pent, men jeg er en grei komponent å se på for å forstå hvordan koden henger sammen" : string.Empty;
+}

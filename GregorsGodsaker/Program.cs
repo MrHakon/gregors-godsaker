@@ -1,5 +1,5 @@
 using GregorsGodsaker.Components;
-using GregorsGodsaker.Services;
+using GregorsGodsaker.Components.Services;
 using GregorsGodsaksKontrakter;
 using Refit;
 
@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<ISnackservice, SnackService>();
+builder.Services.AddScoped<ISnackService, SnackService>();
 builder.Services.AddRefitClient<ISnacks>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:5007"));
 

@@ -1,0 +1,27 @@
+﻿<div class="bg-warning">
+    @* Med en liten alfakrøll foran, kan man skrive C# rett i HTML'en *@
+    @if (SnackData != null)
+    {
+        <ul>
+            @foreach (var snack in SnackData.Where(s => s != "Punsjrull").Take(5))
+            {
+                <li
+                    @onclick="() => HandleClickedSnack(snack)"
+                    class="list_item">
+                    @snack
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    [Parameter] public required List<string>? SnackData { get; set; }
+    [Parameter] public required EventCallback<string> ReturnClickedSnack { get; set; }
+    
+    private async Task HandleClickedSnack(string snack)
+    {
+        await ReturnClickedSnack.InvokeAsync(snack);
+    }
+
+}
