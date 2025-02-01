@@ -1,6 +1,7 @@
 ﻿@* Ved å markere en fil med @page og en filsti, sier vi til Blazor at nettleseren kan navigere til denne. *@
 @page "/Komponenter"
 @using GregorsGodsaker.Components.Services
+@using GregorsGodsaksKontrakter
 
 @* Slik gir man siden en tittel *@
 <PageTitle>Komponenter</PageTitle>
@@ -10,49 +11,95 @@
 <p>Det er ikke meningen at disse må brukes for å løse oppgaven. De er mer ment som hjelp til å forstå Blazor sin syntaks.</p>
 <p>Det er ofte flere måter å skrive dem på.</p>
 
-<div class="d-flex flex-column gap-3">
-    <div>
+<div class="d-flex flex-column gap-3 pb-5" style="width: 500px;">
+    <div class="border p-2 rounded">
         <h3>Knapp</h3>
         @* Verdens enkleste eksempel på hvordan en komponent kan brukes. 
         Navnet hentes fra filnavnet til komponenten *@
         <ButtonComponent/>
     </div>
-    
-    <div>
+
+    <div class="border p-2 rounded">
         @* Her er et tekstinput-felt med databinding *@
         <h3>Input-felt</h3>
         <InputComponent/>
     </div>
 
     @* Denne komponenten tar inn noe data, og returnerer noe annet. *@
-    <div>
+    <div class="border p-2 rounded d-flex flex-column gap-2">
         <h3>Dataflyt</h3>
-        <ListComponent
-            SnackData="SnackData"
-            ReturnClickedSnack="HandleSnack"/>
+        <div class="bg-light p-1 rounded">
+            <p>Child component:</p>
+            <ListComponent
+                SnackData="SnackData"
+                ReturnClickedSnack="HandleSnack"/>
+        </div>
 
-        @if (ClickedSnack != null)
-        {
-            <p>Du trykket på <b>@ClickedSnack</b></p>
-        }
+        <div class="bg-success p-1 text-white rounded">
+            <p>Parent component:</p>
+            @if (ClickedSnack != null)
+            {
+                <p>Du trykket på <b>@ClickedSnack</b></p>
+            }
+        </div>
+    </div>
+
+    @* Denne komponenten tar inn noe data, og returnerer noe annet. *@
+    <div class="border p-2 rounded d-flex flex-column gap-2">
+        <h3>Nedtrekksmeny</h3>
+        <div class="bg-light p-1 rounded">
+            <p>Child component:</p>
+            <DropdownComponent
+                Snacks="SnackData"
+                HandleSnack="HandleSnackFromDropdown"/>
+        </div>
+
+        <div class="bg-success p-1 text-white rounded">
+            <p>Parent component:</p>
+            @if (NedtrekksSnack != null)
+            {
+                <p>
+                    Du valgte <b>@NedtrekksSnack</b>
+
+                    @if (NedtrekksSnack == "Punsjrull")
+                    {
+                        <span> :(</span>
+                    }
+                </p>
+            }
+        </div>
     </div>
 </div>
 
 @code {
-    // Dette er hvordan man bruker dependency injection til å benytte en service, som for eksempel henter ut data fra et API.
+
+    // Dette er hvordan man kan bruke dependency injection til å benytte en service, som for eksempel henter ut data fra et API.
     // Merk at servicen må registreres i Program.cs
     [Inject] public required ISnackService SnackService { get; set; }
-    
-    private List<string>? SnackData { get; set; }
+
+    private List<Snack>? SnackData { get; set; }
     private string? ClickedSnack { get; set; }
+    private string? NedtrekksSnack { get; set; }
+
+    private List<Wine>? WineData { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         SnackData = await SnackService.GetSnacks();
+        WineData = await SnackService.GetWines();
     }
 
     // Vi sender denne funksjonen inn som et parameter til ListComponent, slik at ListComponent kan bruke den til å
     // gi oss noe data tilbake
-    private void HandleSnack(string snack) => ClickedSnack = snack;
+    private void HandleSnack(Snack snack)
+    {
+        ClickedSnack = snack.Name;
+    }
+
+
+    private void HandleSnackFromDropdown(string? snack)
+    {
+        NedtrekksSnack = snack;
+    }
 
 }

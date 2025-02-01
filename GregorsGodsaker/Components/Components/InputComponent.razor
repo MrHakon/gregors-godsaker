@@ -1,12 +1,14 @@
-﻿<div class="d-flex flex-column gap-3">
+﻿<div class="d-flex flex-column gap-2">
     @* Her bruker vi en Blazor-komponent som er spesialisert for tekst-input. 
     MERK: Vi bruker kodeordet "bind", etterfulgt av en property (@bind-{property}) for å sette opp databinding
     mot en variabel. Så i denne C#-komponenten er Value skrevet med stor V. *@
-    <InputText @bind-Value="InputTekst1"></InputText>
+    <label for="input1">Tekst-komponent fra Blazor</label>
+    <InputText id="input1" @bind-Value="InputTekst1"></InputText>
     <p class="input_med_unikt_navn">@InputTekst1</p>
     
     @* Mens et vanlig HTML-element gjerne har "value" med liten V. *@
-    <input type="text" @bind-value="InputTekst2"/>
+    <label for="input2">Native input-komponent fra HTML</label>
+    <input id="input2" type="text" @bind-value="InputTekst2"/>
     <p class="input_med_unikt_navn">@InputTekst2</p>
 </div>
 

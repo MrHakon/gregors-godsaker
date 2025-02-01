@@ -1,0 +1,26 @@
+﻿@using GregorsGodsaksKontrakter
+<div class="d-flex flex-column gap-2">
+    @if (Snacks != null)
+    {
+        <label for="snack-picker">Snackvelger</label>
+        <select
+            id="snack-picker"
+            @onchange="ReturnSnackToParent">
+            @foreach (var snack in Snacks)
+            {
+                <option value="@snack.Name">@snack.Name</option>
+            }
+        </select>
+    }
+</div>
+
+@code {
+    [Parameter] public required List<Snack>? Snacks { get; set; }
+    [Parameter] public required EventCallback<string?> HandleSnack { get; set; }
+
+    private async Task ReturnSnackToParent(ChangeEventArgs input)
+    {
+        await HandleSnack.InvokeAsync(input.Value?.ToString());
+    }
+
+}

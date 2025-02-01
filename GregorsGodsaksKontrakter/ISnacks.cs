@@ -5,5 +5,5 @@ namespace GregorsGodsaksKontrakter;
 public interface ISnacks
 {
     [Get("/api/Snack")]
-    Task<List<string>?> GetSnack();
+    Task<List<Snack>?> GetSnack();
 }

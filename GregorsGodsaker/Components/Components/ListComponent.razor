@@ -1,14 +1,17 @@
-﻿<div class="bg-warning">
+﻿@using GregorsGodsaksKontrakter
+<div class="bg-warning">
     @* Med en liten alfakrøll foran, kan man skrive C# rett i HTML'en *@
     @if (SnackData != null)
     {
         <ul>
-            @foreach (var snack in SnackData.Where(s => s != "Punsjrull").Take(5))
+            @foreach (var snack in SnackData
+                          .Where(s => !string.Equals(s.Name, "Punsjrull", StringComparison.OrdinalIgnoreCase))
+                          .Take(5))
             {
                 <li
                     @onclick="() => HandleClickedSnack(snack)"
                     class="list_item">
-                    @snack
+                    @snack.Name
                 </li>
             }
         </ul>
@@ -16,10 +19,15 @@
 </div>
 
 @code {
-    [Parameter] public required List<string>? SnackData { get; set; }
-    [Parameter] public required EventCallback<string> ReturnClickedSnack { get; set; }
-    
-    private async Task HandleClickedSnack(string snack)
+
+    // Ved å tagge disse med attributten [Parameter], indikerer vi at de skal sendes inn til komponenten fra en parent
+    [Parameter] public required List<Snack>? SnackData { get; set; }
+
+    // Et EventCallback tar inn en funksjon som vi kan Invoke'e, og sende data tilbake til parent.
+    // Krokodilleparentesen sier hvilken type data som skal returneres  
+    [Parameter] public required EventCallback<Snack> ReturnClickedSnack { get; set; }
+
+    private async Task HandleClickedSnack(Snack snack)
     {
         await ReturnClickedSnack.InvokeAsync(snack);
     }
