@@ -1,1 +1,1 @@
-﻿Intro og oppgaver
+﻿Intro og oppgaver.
