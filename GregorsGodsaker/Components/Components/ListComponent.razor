@@ -1,17 +1,16 @@
 ﻿@using GregorsGodsaksKontrakter
-<div class="bg-warning">
+<div>
     @* Med en liten alfakrøll foran, kan man skrive C# rett i HTML'en *@
-    @if (SnackData != null)
+    @if (WineData != null)
     {
-        <ul>
-            @foreach (var snack in SnackData
-                          .Where(s => !string.Equals(s.Name, "Punsjrull", StringComparison.OrdinalIgnoreCase))
-                          .Take(5))
+        <ul class="list-group">
+            @* Småfrekk foreach med filtrering, som plukker ut de tre billigste vinene *@
+            @foreach (var wine in WineData.OrderBy(w => w.Price).Take(3))
             {
                 <li
-                    @onclick="() => HandleClickedSnack(snack)"
-                    class="list_item">
-                    @snack.Name
+                    @onclick="() => HandleClickedSnack(wine)"
+                    class="list_item list-group-item">
+                    @wine.Name
                 </li>
             }
         </ul>
@@ -20,16 +19,17 @@
 
 @code {
 
-    // Ved å tagge disse med attributten [Parameter], indikerer vi at de skal sendes inn til komponenten fra en parent
-    [Parameter] public required List<Snack>? SnackData { get; set; }
+    // Ved å tagge disse med attributten [Parameter], indikerer vi at de skal sendes inn til komponenten fra de som bruker komponenten.
+    [Parameter] public required List<Wine>? WineData { get; set; }
 
     // Et EventCallback tar inn en funksjon som vi kan Invoke'e, og sende data tilbake til parent.
-    // Krokodilleparentesen sier hvilken type data som skal returneres  
-    [Parameter] public required EventCallback<Snack> ReturnClickedSnack { get; set; }
+    // Krokodilleparentesen sier hvilken type data som skal returneres. I dette tilfellet et helt objekt av typen Wine
+    [Parameter] public required EventCallback<Wine> ReturnClickedSnack { get; set; }
 
-    private async Task HandleClickedSnack(Snack snack)
+    private async Task HandleClickedSnack(Wine wine)
     {
-        await ReturnClickedSnack.InvokeAsync(snack);
+        // Vi bare sender data tilbake, men vi kunne jo også validert ting her, eller oppdatert en lagerstatus.
+        await ReturnClickedSnack.InvokeAsync(wine);
     }
 
 }
