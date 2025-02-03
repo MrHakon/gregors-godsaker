@@ -2,9 +2,10 @@
 <div class="d-flex flex-column gap-2">
     @if (Snacks != null)
     {
-        <label for="snack-picker">Snackvelger</label>
+        <label for="snack-picker" class="h4">Snackvelger</label>
         <select
             id="snack-picker"
+            class="form-control"
             @onchange="ReturnSnackToParent">
             @foreach (var snack in Snacks)
             {

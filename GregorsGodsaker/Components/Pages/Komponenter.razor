@@ -6,12 +6,13 @@
 @* Slik gir man siden en tittel *@
 <PageTitle>Komponenter</PageTitle>
 
-<h1>Komponenter</h1>
-<p>Dette er en samling av vanlige elementer man finner på en nettside.</p>
-<p>Det er ikke meningen at disse må brukes for å løse oppgaven. De er mer ment som hjelp til å forstå Blazor sin syntaks.</p>
-<p>Det er ofte flere måter å skrive dem på.</p>
 
 <div class="d-flex flex-column gap-3 pb-5" style="width: 500px;">
+    <h1>Komponenter</h1>
+    <p>
+        Her er et par vanlige elementer som man forventer å finne på en nettside. Det er <b>ikke</b> meningen at disse må brukes for å løse oppgaven. De er mer ment som hjelp til å forstå Blazor sin syntaks.
+        Det er ofte flere måter å skrive dem på.
+    </p>
     <div class="border p-2 rounded">
         <h3>Knapp</h3>
         @* Verdens enkleste eksempel på hvordan en komponent kan brukes. 
@@ -21,53 +22,53 @@
 
     <div class="border p-2 rounded">
         @* Her er et tekstinput-felt med databinding *@
-        <h3>Input-felt</h3>
+        <h3>Tekst-input</h3>
         <InputComponent/>
     </div>
 
     @* Denne komponenten tar inn noe data, og returnerer noe annet. *@
     <div class="border p-2 rounded d-flex flex-column gap-2">
-        <h3>Dataflyt</h3>
+        <h3>Liste</h3>
         <div class="bg-light p-1 rounded">
-            <p>Child component:</p>
+            <h4>Vinvelger</h4>
             <ListComponent
-                SnackData="SnackData"
-                ReturnClickedSnack="HandleSnack"/>
+                WineData="WineData"
+                ReturnClickedSnack="HandleWine"/>
         </div>
 
-        <div class="bg-success p-1 text-white rounded">
-            <p>Parent component:</p>
-            @if (ClickedSnack != null)
-            {
-                <p>Du trykket på <b>@ClickedSnack</b></p>
-            }
-        </div>
+        @if (ClickedWine != null)
+        {
+            <div class="mx-1 p-1 text-white rounded" style="background-color: lightblue">
+                <p>Dette er data som har blitt returnert til hovedsiden, fra en annen komponent</p>
+                <p>Du trykket på: <b>@ClickedWine</b></p>
+            </div>
+        }
     </div>
 
     @* Denne komponenten tar inn noe data, og returnerer noe annet. *@
     <div class="border p-2 rounded d-flex flex-column gap-2">
         <h3>Nedtrekksmeny</h3>
         <div class="bg-light p-1 rounded">
-            <p>Child component:</p>
             <DropdownComponent
                 Snacks="SnackData"
                 HandleSnack="HandleSnackFromDropdown"/>
         </div>
 
-        <div class="bg-success p-1 text-white rounded">
-            <p>Parent component:</p>
-            @if (NedtrekksSnack != null)
-            {
+        @if (DropdownSnack != null)
+        {
+            <div class="mx-1 p-2 text-white rounded" style="background-color: lightblue">
+                <p>Dette er data som har blitt returnert til hovedsiden, fra en annen komponent</p>
                 <p>
-                    Du valgte <b>@NedtrekksSnack</b>
+                    Du valgte: <b>@DropdownSnack</b>
 
-                    @if (NedtrekksSnack == "Punsjrull")
+                    @* Det må da finnes en bedre måte å håndtere punsjrull på *@
+                    @if (DropdownSnack is "Punsjrull" or "Punsj-rull" or "Pønsjrull")
                     {
                         <span> :(</span>
                     }
                 </p>
-            }
-        </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -78,8 +79,8 @@
     [Inject] public required ISnackService SnackService { get; set; }
 
     private List<Snack>? SnackData { get; set; }
-    private string? ClickedSnack { get; set; }
-    private string? NedtrekksSnack { get; set; }
+    private string? ClickedWine { get; set; }
+    private string? DropdownSnack { get; set; }
 
     private List<Wine>? WineData { get; set; }
 
@@ -91,15 +92,14 @@
 
     // Vi sender denne funksjonen inn som et parameter til ListComponent, slik at ListComponent kan bruke den til å
     // gi oss noe data tilbake
-    private void HandleSnack(Snack snack)
+    private void HandleWine(Wine wine)
     {
-        ClickedSnack = snack.Name;
+        ClickedWine = wine.Name;
     }
-
 
     private void HandleSnackFromDropdown(string? snack)
     {
-        NedtrekksSnack = snack;
+        DropdownSnack = snack;
     }
 
 }

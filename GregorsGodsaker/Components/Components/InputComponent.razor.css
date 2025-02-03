@@ -2,7 +2,9 @@
 
 /* Vi vil ikke at klassenavnet skal krasje med bootstrap. */
 .input_med_unikt_navn {
-    background-color: rebeccapurple;
+    background-color: lightblue;
     margin-top: 0.5rem;
     color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
 }
